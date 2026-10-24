@@ -46,10 +46,16 @@ function renderCart() {
     .reduce((total, quantity) => total + quantity, 0);
   cartCount.textContent = totalQuantity;
 
-  // Stretch B4: also write ' · 540.000 đ' into cartTotal.
-  // Prices are in data-price on each card. dataset values are STRINGS:
-  // '180000' + 1 is '1800001'. Convert with Number() first.
-  // Format a number: total.toLocaleString('vi-VN') + ' đ'
+  const totalPrice = [...catalogue.querySelectorAll('.card')]
+    .reduce((total, card) => {
+      const quantity = cart[card.dataset.id] || 0;
+      const price = Number(card.dataset.price);
+      return total + quantity * price;
+    }, 0);
+
+  cartTotal.textContent = totalQuantity === 0
+    ? ''
+    : ` · ${totalPrice.toLocaleString('vi-VN')} đ`;
 }
 
 // ---------------------------------------------------------------------------
